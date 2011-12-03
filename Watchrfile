@@ -30,3 +30,8 @@ watch("lib/(.*/*)\.rb") do |match|
     spec("spec/fog/bertrpc/storage_spec.rb")
   end
 end
+
+watch("spec/service_mock\.rb") do |match|
+  puts(match[0])
+  spec("spec/fog/bertrpc/storage_spec.rb")
+end

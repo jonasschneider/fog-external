@@ -12,11 +12,13 @@ module Fog
           load(connection.remote.directories.list)
         end
   
-        def get(identity)
-          # get server matching id
-          new(data) # data is an attribute hash
-        rescue Excon::Errors::NotFound
-          nil
+        def get(id)
+          data = connection.remote.directories.get(id)
+          if data
+            new(data)
+          else
+            nil
+          end
         end
       end
 
