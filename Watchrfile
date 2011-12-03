@@ -24,5 +24,5 @@ end
 
 watch("lib/(.*/*)\.rb") do |match|
   puts(match[0])
-  spec("spec/"+match[0]+"_spec.rb")
+  spec("spec/"+match[1]+"_spec.rb")
 end

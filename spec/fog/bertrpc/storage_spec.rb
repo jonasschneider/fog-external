@@ -5,8 +5,14 @@ require 'fog/bertrpc/storage'
 describe "fog-bertrpc" do
   it "works" do
     storage = Fog::Storage.new({
-      :local_root => '~/fog',
-      :provider   => 'Bertrpc'
+      :provider   => 'Bertrpc',
+      :url        => 'bertrpc://localhost'
     })
+    
+    directory = storage.directories.create(
+      :key => 'mykey'
+    )
+    
+    storage.directories.first.key.should == 'mykey'
   end
 end
