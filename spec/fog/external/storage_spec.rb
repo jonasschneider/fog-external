@@ -6,7 +6,7 @@ describe "fog-external" do
   let(:storage) do
     storage = Fog::Storage.new({
       :provider   => 'External',
-      :delegate   => service_mock.call
+      :delegate   => service_mock
     })
   end
   
@@ -16,25 +16,25 @@ describe "fog-external" do
   
   describe "#directories" do
     it "#create creates a directory" do
-      service_mock.call.directories.should_receive(:create).with('mykey')
+      service_mock.directories.should_receive(:create).with('mykey')
       directory = storage.directories.create key: 'mykey'
     end
     
     it "#all lists directories" do
-      service_mock.call.directories.should_receive(:list) { [{:key => 'mykey'}] }
+      service_mock.directories.should_receive(:list) { [{:key => 'mykey'}] }
       storage.directories.all.first.key.should == 'mykey'
     end
     
     describe "#get" do
       it "gets a directory" do
-        service_mock.call.directories.should_receive(:get).with('mykey') { {:key => 'mykey'} }
+        service_mock.directories.should_receive(:get).with('mykey') { {:key => 'mykey'} }
         x = storage.directories.get('mykey')
         x.should be_kind_of(Fog::Storage::External::Directory)
         x.key.should == 'mykey'
       end
       
       it "returns nil for unknown directory keys" do
-        service_mock.call.directories.should_receive(:get).with('something_strange') { nil }
+        service_mock.directories.should_receive(:get).with('something_strange') { nil }
         x = storage.directories.get('something_strange')
         x.should be_nil
       end
@@ -51,7 +51,7 @@ describe "fog-external" do
     end
     
     it "#destroy" do
-      service_mock.call.directories.should_receive(:destroy).with('mykey')
+      service_mock.directories.should_receive(:destroy).with('mykey')
       dir.destroy
     end
     
@@ -64,7 +64,7 @@ describe "fog-external" do
     end
     
     it "#save" do
-      service_mock.call.directories.should_receive(:create).with('mykey')
+      service_mock.directories.should_receive(:create).with('mykey')
       dir.save
     end
   end
@@ -74,14 +74,14 @@ describe "fog-external" do
     let(:files) { dir.files }
     
     it "#all" do
-      service_mock.call.files.should_receive(:list).with("mykey") { [{:key => 'mykey/a'}] }
+      service_mock.files.should_receive(:list).with("mykey") { [{:key => 'mykey/a'}] }
       res = files.all
       res.first.key.should == 'mykey/a'
     end
     
     it "#get" do
       data = {:key => 'mykey/a', :content_length => 5, :last_modified => Time.now, :body => 'asdf' }
-      service_mock.call.files.should_receive(:get).with("mykey/a") { data }
+      service_mock.files.should_receive(:get).with("mykey/a") { data }
       res = files.get('a')
       
       res.key.should == 'mykey/a'
@@ -90,7 +90,7 @@ describe "fog-external" do
     end
     
     it "#head" do
-      service_mock.call.files.should_receive(:list).twice.with("mykey") { [{:key => 'mykey/a'}] }
+      service_mock.files.should_receive(:list).twice.with("mykey") { [{:key => 'mykey/a'}] }
       
       res = files.head('a')
       
@@ -112,7 +112,7 @@ describe "fog-external" do
     
     it "#body when the body is not set" do
       data = {:key => 'mykey/a', :content_length => 5, :last_modified => Time.now, :body => 'asdf' }
-      service_mock.call.files.should_receive(:get).with("mykey/a") { data }
+      service_mock.files.should_receive(:get).with("mykey/a") { data }
       file.body.should == 'asdf'
     end
       
@@ -136,7 +136,7 @@ describe "fog-external" do
     end
     
     it "#destroy" do
-      service_mock.call.files.should_receive(:destroy).with("mykey/a")
+      service_mock.files.should_receive(:destroy).with("mykey/a")
       file.destroy
     end
     
@@ -149,7 +149,7 @@ describe "fog-external" do
     end
     
     it "#save" do
-      service_mock.call.files.should_receive(:save).with("mykey/a", "test")
+      service_mock.files.should_receive(:save).with("mykey/a", "test")
       file.body = "test"
       file.save
     end
