@@ -1,37 +1,37 @@
 require 'ernie'
 
 module Fog
-  # Add two numbers together
-  def add(a, b)
-    a + b + 10
+  def create_directory(key)
+    true
   end
-
-  def fib(n)
-    if n == 0 || n == 1
-      1
-    else
-      fib(n - 1) + fib(n - 2)
-    end
+  
+  def list_directories
+    [{:key => 'mykey'}]
   end
-
-  def shadow(x)
-    "ruby"
+  
+  def get_directory(key)
+    {:key => 'mykey'} || nil
   end
-
-  # Return the given number of bytes
-  def bytes(n)
-    'x' * n
+  
+  def destroy_directory(key)
+    true
   end
-
-  # Sleep for +sec+ and then return :ok
-  def slow(sec)
-    sleep(sec)
-    :ok
+  
+  
+  def list_files(dir_key)
+    [{:key => 'mykey/a', :content_length => 5, :last_modified => Time.now}]
   end
-
-  # Throw an error
-  def error
-    raise "abandon hope!"
+  
+  def get_file(key)
+    {:key => 'mykey/a', :content_length => 5, :last_modified => Time.now, :body => 'asdf'} || nil
+  end
+  
+  def destroy_file(key)
+    true || false
+  end
+  
+  def save_file(key, body)
+    true || false
   end
 end
 
