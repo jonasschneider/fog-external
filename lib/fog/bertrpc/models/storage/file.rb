@@ -1,27 +1,32 @@
 require 'fog/core/model'
-require 'fog/bertrpc/models/storage/files'
 
 module Fog
   module Storage
     class Bertrpc
       
-      class Directory < Fog::Model
-        identity  :key
-  
+      class File < Fog::Model
+        identity  :key,             :aliases => 'Key'
+
+        attribute :content_length,  :aliases => 'Content-Length', :type => :integer
+        attribute :last_modified,   :aliases => 'Last-Modified'
+        
+        def directory
+          @directory
+        end
+        
+        def directory=(new_directory)
+          @directory = new_directory
+        end
+        
+        def body
+          attributes[:body]
+        end
+        
         def destroy
           requires :key
           
           connection.remote.directories.destroy(identity)
           true
-        end
-        
-        def files
-          @files ||= begin
-            Fog::Storage::Bertrpc::Files.new(
-              :directory    => self,
-              :connection   => connection
-            )
-          end
         end
         
         def public=(new_public)

@@ -13,8 +13,8 @@ module Fog
       model_path 'fog/bertrpc/models/storage'
       collection  :directories
       model       :directory
-      #model       :file
-      #collection  :files
+      collection  :files
+      model       :file
 
       class Real
         def initialize(options={})
@@ -22,12 +22,11 @@ module Fog
         end
 
         def service
+          # see spec/service_mock.rb for a rough spec
           BERTRPC::Service.new('localhost', 9999)
         end
         
         def remote
-          # directories.list
-          # directories.create
           service.call
         end
       end
