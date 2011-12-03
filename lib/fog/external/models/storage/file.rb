@@ -1,4 +1,5 @@
 require 'fog/core/model'
+require "base64"
 
 module Fog
   module Storage
@@ -55,8 +56,8 @@ module Fog
   
         def save
           requires :body, :directory, :key
-          
-          if res = connection.remote.save_file(full_key, body)
+          body_string = body.respond_to?(:read) ? body.read : body
+          if res = connection.remote.save_file(full_key, body_string)
             merge_attributes(
               :content_length => Fog::Storage.get_body_size(body),
               :last_modified  => res

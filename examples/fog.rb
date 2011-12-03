@@ -38,11 +38,12 @@ module Fog
   
   
   def list_files(dir_key)
+    data = nil
     Dir.chdir(path_to(dir_key)) do
       data = Dir.glob('**/*').reject do |file|
         ::File.directory?(file)
       end.map do |key|
-        path = file_path(key)
+        path = path_to(key)
         {
           :content_length => ::File.size(path),
           :key            => key,
@@ -51,6 +52,19 @@ module Fog
       end
     end
     data
+  end
+  
+  def head_file(key)
+    path = path_to(key)
+    if ::File.exists?(path)
+      {
+        :content_length => ::File.size(path),
+        :key            => key,
+        :last_modified  => ::File.mtime(path)
+      }
+    else
+      nil
+    end
   end
   
   def get_file(key)
@@ -79,17 +93,15 @@ module Fog
   end
   
   def save_file(key, body)
+    path = path_to(key)
+    
+    FileUtils.mkdir_p(File.dirname(path))
+    
     file = ::File.new(path, 'wb')
-    if body.is_a?(String)
-      file.write(body)
-    else
-      file.write(body.read)
-    end
+    file.write(body)
     file.close
     
     ::File.mtime(path)
-  rescue
-    false
   end
   
   private

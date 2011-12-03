@@ -28,8 +28,9 @@ module Fog
         
         def head(id) # hackish!
           requires :directory
-          real_key = file_key(id)
-          if data = connection.remote.list_files(directory.key).detect{|c|c[:key] == real_key}
+          
+          data = connection.remote.head_file(file_key(id))
+          if data
             new(data)
           else
             nil
