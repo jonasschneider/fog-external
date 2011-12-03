@@ -7,8 +7,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Jonas Schneider"]
   s.email       = ["mail@jonasschneider.com"]
   s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.summary     = %q{Fog::Storage with a consistent API}
+  s.description = %q{Use a custom backend (such as BERTRPC) with Fog:Storage.}
 
 
   s.files         = `git ls-files`.split("\n")
