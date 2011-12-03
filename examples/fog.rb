@@ -1,5 +1,6 @@
 require 'ernie'
 ROOT = '/tmp/fog-external-example-root'
+# ported from Fog's Local storage
 
 module Fog
   def create_directory(key)

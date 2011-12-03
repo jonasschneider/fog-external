@@ -14,7 +14,8 @@ With `fog-external`, you can use arbitrary Ruby objects as backend for `Fog::Sto
 
 You can then use `storage` just like any other Fog::Storage object, see [the Fog docs](http://fog.io/1.1.1/storage/) for what's possible.. The API is compatible to the one of `Fog::Local`.
 
-The delegate must respond to a number of backend methods. The delegate in the above-example uses [BERTRPC][1] to call a server on localhost:9999, using the `fog` module name. For more information about using BERTRPC, see `examples/`.
+The delegate must respond to a number of backend methods. The delegate in the above-example uses [BERT-RPC][1] to call a server on localhost:9999, using the `fog` module name.
+See `examples/example.rb` for a complete example *including a Ernie-powered BERT-RPC backend*.
 
 ## Copyright
 
