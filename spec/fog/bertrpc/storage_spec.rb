@@ -26,11 +26,13 @@ describe "fog-bertrpc" do
     end
     
     it "#all lists directories" do
+      service_mock.call.directories.should_receive(:list)
       storage.directories.all.first.key.should == 'mykey'
     end
     
     describe "#get" do
       it "gets a directory" do
+        service_mock.call.directories.should_receive(:get).with('mykey')
         x = storage.directories.get('mykey')
         x.should be_kind_of(Fog::Storage::Bertrpc::Directory)
         x.key.should == 'mykey'
@@ -40,6 +42,22 @@ describe "fog-bertrpc" do
         x = storage.directories.get('something_strange')
         x.should be_nil
       end
+    end
+  end
+  
+  describe "directory model" do
+    let(:dir) { Fog::Storage::Bertrpc::Directory.new connection: storage, key: 'mykey' }
+    it "#destroy"
+    it "#files"
+    it "#public=" do
+      (dir.public = :a).should == :a
+    end
+    
+    it "#public_url" do
+      dir.public_url.should be_nil
+    end
+    it "#save" do
+      
     end
   end
 end

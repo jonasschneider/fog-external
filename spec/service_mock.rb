@@ -1,10 +1,10 @@
 class ServiceMock
   def call
-    return Object.new.tap do |o|
+    @o ||= Object.new.tap do |o|
       o.instance_eval do
         
         def directories
-          return Object.new.tap do |o|
+          @o ||= Object.new.tap do |o|
             o.instance_eval do
               
               def create(key)
