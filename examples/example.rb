@@ -15,7 +15,7 @@ def run(cmd)
 end
 
 puts "Starting ernie on localhost:8000"
-run "ernie -d -c examples/ernie.conf -P examples/ernie.pid -a /tmp/ernie.log"
+run "ernie -d -c examples/ernie.conf -P /tmp/ernie.pid -a /tmp/ernie.log"
 
 puts "Ernie running."
 
