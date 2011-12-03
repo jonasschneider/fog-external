@@ -10,8 +10,7 @@ module Fog
         def destroy
           requires :key
           
-          requires :identity
-          connection.remote.destroy_server(identity)
+          connection.remote.directories.destroy(identity)
           true
         end
         
