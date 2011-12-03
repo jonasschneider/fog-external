@@ -11,7 +11,7 @@ module Fog
         def destroy
           requires :key
           
-          connection.remote.directories.destroy(identity)
+          connection.remote.destroy_directory(identity)
           true
         end
         
@@ -35,7 +35,7 @@ module Fog
         def save
           requires :key
           
-          connection.remote.directories.create(identity)
+          connection.remote.create_directory(identity)
         end
       end
 

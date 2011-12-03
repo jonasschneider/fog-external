@@ -12,13 +12,13 @@ module Fog
         def all
           requires :directory
           
-          load(connection.remote.files.list(directory.key))
+          load(connection.remote.list_files(directory.key))
         end
   
         def get(id)
           requires :directory
           
-          data = connection.remote.directories.get(file_key(id))
+          data = connection.remote.get_file(file_key(id))
           if data
             new(data)
           else
@@ -29,7 +29,7 @@ module Fog
         def head(id) # hackish!
           requires :directory
           real_key = file_key(id)
-          if data = connection.remote.files.list(directory.key).detect{|c|c[:key] == real_key}
+          if data = connection.remote.list_files(directory.key).detect{|c|c[:key] == real_key}
             new(data)
           else
             nil

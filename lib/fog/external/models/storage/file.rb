@@ -41,7 +41,7 @@ module Fog
         def destroy
           requires :key, :directory
           
-          connection.remote.files.destroy(full_key)
+          connection.remote.destroy_file(full_key)
           true
         end
         
@@ -56,7 +56,7 @@ module Fog
         def save
           requires :body, :directory, :key
           
-          connection.remote.files.save(full_key, body)
+          connection.remote.save_file(full_key, body)
         end
         
         private

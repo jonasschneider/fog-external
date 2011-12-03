@@ -9,11 +9,11 @@ module Fog
         model Fog::Storage::External::Directory
   
         def all
-          load(connection.remote.directories.list)
+          load(connection.remote.list_directories)
         end
   
         def get(id)
-          data = connection.remote.directories.get(id)
+          data = connection.remote.get_directory(id)
           if data
             new(data)
           else
