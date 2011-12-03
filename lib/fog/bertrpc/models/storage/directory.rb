@@ -36,7 +36,6 @@ module Fog
           requires :key
           
           connection.remote.directories.create(identity)
-          true
         end
       end
 

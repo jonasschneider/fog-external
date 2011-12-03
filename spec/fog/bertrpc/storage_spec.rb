@@ -81,7 +81,6 @@ describe "fog-bertrpc" do
       service_mock.call.files.should_receive(:list).with("mykey") { [{:key => 'mykey/a'}] }
       res = files.all
       res.first.key.should == 'mykey/a'
-      res.first.body.should be_nil
     end
     
     it "#get" do
@@ -108,6 +107,55 @@ describe "fog-bertrpc" do
     it "#new" do
       files.new(:key => 'hai').directory.should == dir
       files.new(:key => 'hai').key.should == 'hai'
+    end
+  end
+  
+  describe "::Files" do
+    let(:dir) { Fog::Storage::Bertrpc::Directory.new connection: storage, key: 'mykey' }
+    let(:file) { Fog::Storage::Bertrpc::File.new connection: storage, last_modified: Time.now, key: 'a', directory: dir }
+    
+    it "#body when the body is not set" do
+      data = {:key => 'mykey/a', :content_length => 5, :last_modified => Time.now, :body => 'asdf' }
+      service_mock.call.files.should_receive(:get).with("mykey/a") { data }
+      file.body.should == 'asdf'
+    end
+      
+    it "#body when the body is set" do
+      file = Fog::Storage::Bertrpc::File.new connection: storage, key: 'a', directory: dir, body: 'b'
+      file.body.should == 'b'
+    end
+    
+    it "#body= sets the body" do
+      file.body = 'new'
+      file.body.should == 'new'
+    end
+    
+    it "#directory" do
+      file.directory.should == dir
+    end
+    
+    it "#content_type" do
+      file.key = 'a.txt'
+      file.content_type.should == 'text/plain'
+    end
+    
+    it "#destroy" do
+      service_mock.call.files.should_receive(:destroy).with("mykey/a")
+      file.destroy
+    end
+    
+    it "#public=" do
+      (file.public = :a).should == :a
+    end
+    
+    it "#public_url" do
+      file.public_url.should be_nil
+    end
+    
+    it "#save" do
+      service_mock.call.files.should_receive(:save).with("mykey/a", "test")
+      file.body = "test"
+      file.save
     end
   end
 end

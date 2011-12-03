@@ -39,6 +39,14 @@ class ServiceMock
                 {:key => 'mykey/a', :content_length => 5, :last_modified => Time.now, :body => 'asdf'} || nil
               end
               
+              def destroy(key)
+                true || false
+              end
+              
+              def save(key, body)
+                true || false
+              end
+              
             end
           end
         end

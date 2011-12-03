@@ -18,14 +18,30 @@ module Fog
           @directory = new_directory
         end
         
+        def content_type
+          @content_type ||= begin
+            unless (mime_types = ::MIME::Types.of(key)).empty?
+              mime_types.first.content_type
+            end
+          end
+        end
+        
         def body
-          attributes[:body]
+          attributes[:body] ||= if last_modified
+            directory.files.get(identity).body
+          else
+            ''
+          end
+        end
+        
+        def body=(new_body)
+          attributes[:body] = new_body
         end
         
         def destroy
-          requires :key
+          requires :key, :directory
           
-          connection.remote.directories.destroy(identity)
+          connection.remote.files.destroy(full_key)
           true
         end
         
@@ -38,10 +54,15 @@ module Fog
         end
   
         def save
-          requires :key
+          requires :body, :directory, :key
           
-          connection.remote.directories.create(identity)
-          true
+          connection.remote.files.save(full_key, body)
+        end
+        
+        private
+        
+        def full_key
+          ::File.join(directory.key, key)
         end
       end
 
