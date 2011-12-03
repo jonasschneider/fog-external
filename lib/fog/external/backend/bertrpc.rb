@@ -20,6 +20,7 @@ module Fog
       
         def get_file(key)
           res = @module.get_file(key)
+          return nil if res.nil?
           res[:body] = Base64.decode64(res[:body])
           res
         end
