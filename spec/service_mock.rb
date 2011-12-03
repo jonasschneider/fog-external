@@ -29,6 +29,6 @@ class ServiceMock
   end
   
   def save_file(key, body)
-    true || false
+    mtime || false
   end
 end

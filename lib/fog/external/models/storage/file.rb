@@ -56,7 +56,15 @@ module Fog
         def save
           requires :body, :directory, :key
           
-          connection.remote.save_file(full_key, body)
+          if res = connection.remote.save_file(full_key, body)
+            merge_attributes(
+              :content_length => Fog::Storage.get_body_size(body),
+              :last_modified  => res
+            )
+            true
+          else
+            false
+          end
         end
         
         private
