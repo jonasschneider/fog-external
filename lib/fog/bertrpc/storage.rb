@@ -2,6 +2,7 @@ require 'fog'
 require 'fog/storage'
 
 require 'fog-bertrpc'
+require 'bertrpc'
 
 module Fog
   module Storage
@@ -20,8 +21,14 @@ module Fog
           require 'mime/types'
         end
 
-        def connection
+        def service
           BERTRPC::Service.new('localhost', 9999)
+        end
+        
+        def remote
+          # directories.list
+          # directories.create
+          service.call
         end
       end
 

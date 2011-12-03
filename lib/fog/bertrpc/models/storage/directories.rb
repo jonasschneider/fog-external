@@ -9,8 +9,7 @@ module Fog
         model Fog::Storage::Bertrpc::Directory
   
         def all
-          # get list of servers
-          load(data) # data is an array of attribute hashes
+          load(connection.remote.directories.list)
         end
   
         def get(identity)

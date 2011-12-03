@@ -5,21 +5,20 @@ module Fog
     class Bertrpc
       
       class Directory < Fog::Model
-        identity  :id
+        identity  :key
   
         def destroy
+          requires :key
+          
           requires :identity
-          connection.destroy_server(identity)
+          connection.remote.destroy_server(identity)
           true
         end
   
-        def ready?
-          state == 'running'
-        end
-  
         def save
-          requires ...
-          connection.create_server(options)
+          requires :key
+          
+          connection.remote.directories.create(identity)
           true
         end
       end

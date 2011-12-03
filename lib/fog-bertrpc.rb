@@ -1,5 +1,3 @@
-require "fog-bertrpc/version"
-
 module Fog
   module Storage
      def self.new(attributes) # monkey patch to add :bertrpc
