@@ -1,16 +1,15 @@
 require 'fog'
 require 'fog/storage'
 
-require 'fog-bertrpc'
-require 'bertrpc'
+require 'fog-external'
 
 module Fog
   module Storage
-    class Bertrpc < Fog::Service
+    class External < Fog::Service
 
-      requires :url
+      requires :delegate
 
-      model_path 'fog/bertrpc/models/storage'
+      model_path 'fog/external/models/storage'
       collection  :directories
       model       :directory
       collection  :files
@@ -19,15 +18,11 @@ module Fog
       class Real
         def initialize(options={})
           require 'mime/types'
-        end
-
-        def service
-          # see spec/service_mock.rb for a rough spec
-          BERTRPC::Service.new('localhost', 9999)
+          @delegate = options[:delegate]
         end
         
         def remote
-          service.call
+          @delegate
         end
       end
 

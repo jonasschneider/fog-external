@@ -1,9 +1,9 @@
 require 'fog/core/model'
-require 'fog/bertrpc/models/storage/files'
+require 'fog/external/models/storage/files'
 
 module Fog
   module Storage
-    class Bertrpc
+    class External
       
       class Directory < Fog::Model
         identity  :key
@@ -17,7 +17,7 @@ module Fog
         
         def files
           @files ||= begin
-            Fog::Storage::Bertrpc::Files.new(
+            Fog::Storage::External::Files.new(
               :directory    => self,
               :connection   => connection
             )

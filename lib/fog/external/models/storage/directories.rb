@@ -1,12 +1,12 @@
 require 'fog/core/collection'
-require 'fog/bertrpc/models/storage/directory'
+require 'fog/external/models/storage/directory'
 
 module Fog
   module Storage
-    class Bertrpc
+    class External
 
       class Directories < Fog::Collection
-        model Fog::Storage::Bertrpc::Directory
+        model Fog::Storage::External::Directory
   
         def all
           load(connection.remote.directories.list)

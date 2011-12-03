@@ -2,7 +2,7 @@ require 'fog/core/model'
 
 module Fog
   module Storage
-    class Bertrpc
+    class External
       
       class File < Fog::Model
         identity  :key,             :aliases => 'Key'

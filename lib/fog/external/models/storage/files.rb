@@ -1,13 +1,13 @@
 require 'fog/core/collection'
-require 'fog/bertrpc/models/storage/file'
+require 'fog/external/models/storage/file'
 
 module Fog
   module Storage
-    class Bertrpc
+    class External
 
       class Files < Fog::Collection
         attribute :directory
-        model Fog::Storage::Bertrpc::File
+        model Fog::Storage::External::File
   
         def all
           requires :directory

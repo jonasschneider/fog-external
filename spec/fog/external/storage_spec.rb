@@ -1,21 +1,17 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'spec_helper'))
 
-require 'fog/bertrpc/storage'
+require 'fog/external/storage'
 
-describe "fog-bertrpc" do
+describe "fog-external" do
   let(:storage) do
     storage = Fog::Storage.new({
-      :provider   => 'Bertrpc',
-      :url        => 'bertrpc://localhost'
+      :provider   => 'External',
+      :delegate   => service_mock.call
     })
   end
   
   let(:service_mock) do
     ServiceMock.new
-  end
-  
-  before :each do
-    BERTRPC::Service.stub(:new).and_return(service_mock)
   end
   
   describe "#directories" do
@@ -33,7 +29,7 @@ describe "fog-bertrpc" do
       it "gets a directory" do
         service_mock.call.directories.should_receive(:get).with('mykey') { {:key => 'mykey'} }
         x = storage.directories.get('mykey')
-        x.should be_kind_of(Fog::Storage::Bertrpc::Directory)
+        x.should be_kind_of(Fog::Storage::External::Directory)
         x.key.should == 'mykey'
       end
       
@@ -46,10 +42,10 @@ describe "fog-bertrpc" do
   end
   
   describe "::Directory" do
-    let(:dir) { Fog::Storage::Bertrpc::Directory.new connection: storage, key: 'mykey' }
+    let(:dir) { Fog::Storage::External::Directory.new connection: storage, key: 'mykey' }
     
     it "#files" do
-      dir.files.should be_kind_of(Fog::Storage::Bertrpc::Files)
+      dir.files.should be_kind_of(Fog::Storage::External::Files)
       dir.files.directory.should == dir
       dir.files.connection.should == storage
     end
@@ -74,7 +70,7 @@ describe "fog-bertrpc" do
   end
   
   describe "::Files" do
-    let(:dir) { Fog::Storage::Bertrpc::Directory.new connection: storage, key: 'mykey' }
+    let(:dir) { Fog::Storage::External::Directory.new connection: storage, key: 'mykey' }
     let(:files) { dir.files }
     
     it "#all" do
@@ -111,8 +107,8 @@ describe "fog-bertrpc" do
   end
   
   describe "::Files" do
-    let(:dir) { Fog::Storage::Bertrpc::Directory.new connection: storage, key: 'mykey' }
-    let(:file) { Fog::Storage::Bertrpc::File.new connection: storage, last_modified: Time.now, key: 'a', directory: dir }
+    let(:dir) { Fog::Storage::External::Directory.new connection: storage, key: 'mykey' }
+    let(:file) { Fog::Storage::External::File.new connection: storage, last_modified: Time.now, key: 'a', directory: dir }
     
     it "#body when the body is not set" do
       data = {:key => 'mykey/a', :content_length => 5, :last_modified => Time.now, :body => 'asdf' }
@@ -121,7 +117,7 @@ describe "fog-bertrpc" do
     end
       
     it "#body when the body is set" do
-      file = Fog::Storage::Bertrpc::File.new connection: storage, key: 'a', directory: dir, body: 'b'
+      file = Fog::Storage::External::File.new connection: storage, key: 'a', directory: dir, body: 'b'
       file.body.should == 'b'
     end
     

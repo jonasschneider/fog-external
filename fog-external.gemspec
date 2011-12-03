@@ -2,7 +2,7 @@
 $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
-  s.name        = "fog-bertrpc"
+  s.name        = "fog-external"
   s.version     = "0.0.1"
   s.authors     = ["Jonas Schneider"]
   s.email       = ["mail@jonasschneider.com"]
@@ -10,7 +10,6 @@ Gem::Specification.new do |s|
   s.summary     = %q{TODO: Write a gem summary}
   s.description = %q{TODO: Write a gem description}
 
-  s.rubyforge_project = "fog-bertrpc"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
@@ -22,5 +21,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec"
   
   s.add_runtime_dependency "fog"
-  s.add_runtime_dependency "bertrpc"
 end
