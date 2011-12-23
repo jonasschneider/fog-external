@@ -20,6 +20,10 @@ class ServiceMock
     [{:key => 'mykey/a', :content_length => 5, :last_modified => Time.now}]
   end
   
+  def head_file(key)
+    {:key => 'mykey/a', :content_length => 5, :last_modified => Time.now} || nil
+  end
+  
   def get_file(key)
     {:key => 'mykey/a', :content_length => 5, :last_modified => Time.now, :body => 'asdf'} || nil
   end

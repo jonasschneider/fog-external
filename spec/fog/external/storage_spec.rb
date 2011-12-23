@@ -90,13 +90,15 @@ describe "fog-external" do
     end
     
     it "#head" do
-      service_mock.should_receive(:list_files).twice.with("mykey") { [{:key => 'mykey/a'}] }
+      data = {:key => 'mykey/a', :content_length => 5, :last_modified => Time.now }
+      service_mock.should_receive(:head_file).with("mykey/a") { data }
       
       res = files.head('a')
       
       res.key.should == 'mykey/a'
-      res.content_length.should be_nil
+      res.content_length.should == 5
       
+      service_mock.should_receive(:head_file).with("mykey/b") { nil }
       files.head('b').should be_nil
     end
     
